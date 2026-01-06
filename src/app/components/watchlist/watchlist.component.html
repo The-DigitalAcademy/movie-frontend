@@ -1,0 +1,62 @@
+
+<!-- Watchlist Page -->
+<div>
+  <!-- Watchlist Header -->
+  <div>
+    <h1 style="color: aqua;">My Watchlist</h1>
+    <div>
+      <span >{{ watchlist.length }} movie(s)</span>
+      <button
+        *ngIf="!isEmpty"
+        (click)="clearWatchlist()"
+      >
+        Clear All
+      </button>
+    </div>
+  </div>
+
+  <!-- Watchlist Content -->
+  <div *ngIf="!isEmpty" class="watchlist-content">
+    <!-- Movies Grid -->
+    <div>
+      <div *ngFor="let movie of watchlist">
+        <!-- Remove Button -->
+        <button
+          (click)="removeFromWatchlist(movie.id)"
+          aria-label="Remove from watchlist"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+
+        <!-- Movie Poster/Placeholder -->
+        <div>
+          <i class="fas fa-film"></i>
+        </div>
+
+        <!-- Movie Details -->
+        <div>
+          <h3 >{{ movie.primaryTitle }}</h3>
+          <div>
+            <i class="fas fa-tag" *ngFor="let genre of movie.genres">
+              {{ genre }}
+            </i>
+          </div>
+          <div>
+            <span>{{ movie.startYear }}</span>
+            <span>
+              <i class="fas fa-star"></i> {{ movie.averageRating }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty Watchlist Message -->
+  <div *ngIf="isEmpty" class="empty-watchlist">
+    <i class="fas fa-bookmark fa-3x"></i>
+    <h2 style="color: azure;">Your watchlist is empty</h2>
+    <p style="color: azure;">Start adding movies you want to watch later!</p>
+    <a style="color: aliceblue;" routerLink="/">Browse Movies</a>
+  </div>
+</div>

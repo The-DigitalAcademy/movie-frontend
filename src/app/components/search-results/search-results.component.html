@@ -1,0 +1,56 @@
+<!-- Search Results Page -->
+<div>
+  <!-- Results Header -->
+  <div>
+    <button (click)="goBack()">
+      <i class="fas fa-arrow-left"></i> Back
+    </button>
+
+    <div>
+      <h2 *ngIf="searchQuery">Search Results for "{{ searchQuery }}"</h2>
+      <p >{{ searchResults.length }} movie(s) found</p>
+    </div>
+  </div>
+
+  <!-- Results Grid -->
+  <div *ngIf="searchResults.length > 0" class="movies-grid">
+    <div *ngFor="let movie of searchResults" class="movie-card">
+      <!-- Watchlist Button -->
+      <button
+        (click)="toggleWatchlist(movie)"
+        [class.in-watchlist]="isInWatchlist(movie.id)"
+        aria-label="Add to watchlist"
+      >
+        <i class="fas" [class.fa-check]="isInWatchlist(movie.id)" [class.fa-plus]="!isInWatchlist(movie.id)"></i>
+      </button>
+
+      <!-- Movie Poster/Placeholder -->
+      <div >
+        <i class="fas fa-film"></i>
+        <img [src]="movie.primaryImage" alt="{{movie.description}}">
+      </div>
+
+      <!-- Movie Details -->
+      <div >
+        <h3 >{{ movie.primaryTitle }}</h3>
+        <div  *ngFor="let genre of movie.genres">
+          <i class="fas fa-tag"></i> {{ genre }}
+        </div>
+        <div >
+          <span >{{ movie.startYear }}</span>
+          <span>
+            <i class="fas fa-star"></i> {{ movie.averageRating }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Results Message -->
+  <div *ngIf="searchResults.length === 0 && searchQuery" class="no-results">
+    <i class="fas fa-search fa-3x"></i>
+    <h3>No movies found</h3>
+    <p>Try searching with different keywords</p>
+    <button (click)="goBack()">Back to Home</button>
+  </div>
+</div>

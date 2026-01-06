@@ -1,0 +1,28 @@
+
+<!-- Search Section -->
+<div class="search-container">
+  <div >
+    <input
+      type="text"
+      [(ngModel)] = "searchQuery"
+      (keypress)= "onKeyPress($event)"
+      placeholder="Search movies by title, year, or genre..."
+      class="search-input"
+      aria-label="Search movies"
+    />
+    <h1 style="color: aliceblue;">{{searchQuery}}</h1>
+    <button
+      (click)="onSearch()"
+      [disabled]="!searchQuery.trim()"
+    > Search
+      <i class="fas fa-search"></i>
+    </button>
+    <button
+      *ngIf="searchQuery"
+      (click)="clearSearch()"
+      aria-label="Clear search"
+    >Clear Search
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>

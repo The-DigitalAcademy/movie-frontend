@@ -1,0 +1,31 @@
+<app-navigation></app-navigation>
+<div class="favourite-movie-container">
+    <h1 style="color: aquamarine;" class="favourite-movie-title">My Favorite Movies 💙</h1>
+
+    <!-- Instead of this, use movie-card from Neo -->
+    <div class="favourite-movie-grid">
+        
+        <div class="favourite-movie-card" *ngFor="let movie of favorites">
+            <div class="favourite-movie-remove">
+                <span (click)="removeFromFavorites(movie.id)" class="favourite-movie-remove-icon">×</span>
+            </div>
+            <img [src]="movie.primaryImage" alt="{{movie.primaryTitle}}" class="favourite-movie-poster">
+            <div class="favourite-movie-info">
+                <h3 class="favourite-movie-name">{{movie.primaryTitle}}</h3>
+                <p class="favourite-movie-year">{{movie.startYear}}</p>
+                <span class="favourite-movie-genre" *ngFor="let genre of movie.genres">{{genre}}</span>
+                <div class="favourite-movie-rating">
+                    <span class="favourite-movie-star">★</span>
+                    <span class="favourite-movie-score">{{movie.averageRating}}/10</span>
+                </div>
+                <p class="favourite-movie-description">{{movie.description}}</p>
+            </div>
+        </div>
+    
+    </div>
+    
+    <!-- Empty state (when no movies are added) -->
+    <div class="favourite-movie-empty" style="display: none;">
+        You haven't added any favorite movies yet. Start adding some!
+    </div>
+</div>

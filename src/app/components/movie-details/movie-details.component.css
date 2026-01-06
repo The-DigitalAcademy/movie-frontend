@@ -1,0 +1,314 @@
+
+/* Body styling: sets font, background image, and dark overlay properties */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url('../../../assets/images/NuAgeBG.jpeg'); /* Background image for the site */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    color: #ffffff; /* Default text color */
+}
+.movie-details-container {
+  color: #fff;
+  background-color: #0b0c10;
+  padding: 40px;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ---- Main Layout ---- */
+.movie-header {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.movie-poster {
+  width: 300px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  object-fit: cover;
+}
+
+/* ---- Movie Info ---- */
+.movie-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.movie-info h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #66fcf1;
+}
+
+.movie-meta {
+  font-size: 0.95rem;
+  color: #c5c6c7;
+  margin-bottom: 20px;
+}
+
+.movie-meta span {
+  margin-right: 20px;
+}
+
+.movie-info p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #d1d1d1;
+  margin-bottom: 30px;
+}
+
+/* ---- Action Buttons ---- */
+.action-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.watch-btn,
+.favorite-btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.watch-btn {
+  background-color: #45a29e;
+  color: #fff;
+}
+
+.watch-btn:hover {
+  background-color: #66fcf1;
+  color: #000;
+}
+
+.favorite-btn {
+  background-color: #1f2833;
+  color: #66fcf1;
+  border: 1px solid #45a29e;
+  box-sizing: content-box;
+}
+
+.favorite-btn:hover {
+  background-color: #45a29e;
+  color: #fff;
+}
+
+/* ---- Cast Section ---- */
+.cast-section {
+  margin-top: 50px;
+}
+
+.cast-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #66fcf1;
+}
+
+.cast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 20px;
+}
+
+.cast-member {
+  text-align: center;
+}
+
+.cast-member img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 8px;
+  border: 2px solid #45a29e;
+}
+
+.cast-member p {
+  font-size: 0.9rem;
+  color: #c5c6c7;
+}
+
+/* ---- Reviews Section ---- */
+.reviews-section {
+  margin-top: 60px;
+}
+
+.reviews-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #66fcf1;
+}
+
+.review {
+  background-color: #1f2833;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  color: #c5c6c7;
+}
+
+.review strong {
+  color: #fff;
+}
+
+.add-review-btn {
+  margin-top: 15px;
+  background-color: transparent;
+  border: 1px solid #66fcf1;
+  color: #66fcf1;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.add-review-btn:hover {
+  background-color: #45a29e;
+  color: #fff;
+}
+
+/* ---- Review Form ---- */
+.review-form {
+  background-color: #1f2833;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.review-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.review-form input,
+.review-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background-color: #0b0c10;
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.review-form button {
+  background-color: #45a29e;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.review-form button:hover {
+  background-color: #66fcf1;
+  color: #000;
+}
+
+/* ---- Login Modal ---- */
+.login-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.login-modal-content {
+  background-color: #1f2833;
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+  color: #fff;
+}
+
+.login-modal-content button {
+  margin: 10px;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #45a29e;
+  color: #fff;
+  transition: 0.3s;
+}
+
+.login-modal-content button:hover {
+  background-color: #66fcf1;
+  color: #000;
+}
+
+/* ---- Recommendations ---- */
+.recommendations-section {
+  margin-top: 60px;
+}
+
+.recommendations-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #66fcf1;
+}
+
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+}
+
+.recommendation-card {
+  background-color: #1f2833;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-5px);
+}
+
+.recommendation-card img {
+  width: 100%;
+  height: 220px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+
+.recommendation-card p {
+  color: #c5c6c7;
+  font-size: 0.95rem;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .movie-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .movie-poster {
+    width: 80%;
+  }
+
+  .movie-info {
+    align-items: center;
+  }
+}

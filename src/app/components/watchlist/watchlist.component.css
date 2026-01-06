@@ -1,0 +1,238 @@
+/* Watchlist Container */
+.watchlist-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 80vh;
+}
+
+/* Watchlist Header */
+.watchlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.watchlist-header h1 {
+  color: #333;
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.watchlist-stats {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.movie-count {
+  background: #667eea;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.clear-all-btn {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.clear-all-btn:hover {
+  background: #ff5252;
+  transform: translateY(-2px);
+}
+
+/* Watchlist Content */
+.watchlist-content {
+  margin-top: 2rem;
+}
+
+/* Movies Grid */
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* Movie Card */
+.movie-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Remove Button
+.remove-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 107, 107, 0.9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-btn:hover {
+  background: #ff5252;
+  transform: scale(1.1); */
+/* }  */
+
+/* Movie Poster */
+.movie-poster {
+  height: 200px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 4rem;
+}
+
+/* Movie Details */
+.movie-details {
+  padding: 1.5rem;
+}
+
+.movie-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  line-height: 1.3;
+}
+
+.movie-genre {
+  color: #667eea;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.movie-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.movie-year {
+  color: #666;
+  font-weight: 500;
+}
+
+.movie-rating {
+  color: #ffc107;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Empty Watchlist */
+.empty-watchlist {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
+}
+
+.empty-watchlist i {
+  color: #ddd;
+  margin-bottom: 1rem;
+}
+
+.empty-watchlist h2 {
+  margin: 1rem 0 0.5rem 0;
+  color: #333;
+}
+
+.empty-watchlist p {
+  margin-bottom: 2rem;
+}
+
+/* .browse-btn {
+  background: #667eea;
+  color: white;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  display: inline-block;
+} */
+
+/* .browse-btn:hover {
+  background: #5a6fd8;
+  transform: translateY(-2px);
+} */
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .watchlist-container {
+    padding: 1rem;
+  }
+
+  .watchlist-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .watchlist-stats {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .movies-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .movie-poster {
+    height: 180px;
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .movies-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .movie-details {
+    padding: 1rem;
+  }
+
+  .movie-title {
+    font-size: 1.1rem;
+  }
+
+  .watchlist-header h1 {
+    font-size: 2rem;
+  }
+}

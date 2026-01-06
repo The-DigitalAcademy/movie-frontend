@@ -1,0 +1,26 @@
+ <!-- <p>On Movie car Component</p>
+ <div class="" *ngFor="let movie of movies">
+    <p>id: {{movie.id}}</p>
+        <p>name: {{movie.titleText.text}}</p>
+        <img [src]="movie.primaryImage.url" alt="{{ movie.titleText.text }}">
+ </div> -->
+
+ <div class='movie-card' *ngIf="movie">
+  <a routerLink="/movie-details/{{movie.id}}">
+      <img 
+    [src]='getMovieImage()' 
+    [alt]='getMovieTitle()' 
+    class="movie-poster">
+  </a>
+
+  
+  <div class="movie-content">
+    <h3 class="movie-title">{{ getMovieTitle() }}</h3>
+    
+    <div class="movie-meta">
+      <span class="movie-year">{{ getMovieYear() }}</span>
+      <span class="movie-genre">{{ getMovieGenres() }}</span>
+      <span class="movie-rating">⭐ {{ getMovieRating() }}</span>
+    </div>
+  </div>
+</div>

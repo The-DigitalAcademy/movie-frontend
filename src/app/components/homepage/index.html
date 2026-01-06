@@ -1,0 +1,71 @@
+<div class="overlay" id="overlay"></div>
+
+<div class="sidebar" id="sidebar">
+    <h2 style="margin-bottom: 20px;">Menu</h2>
+    <div class="sidebar-item active" data-page="home">
+        <span>🎬</span> Movie Genres
+    </div>
+    <div class="sidebar-item" data-page="watchlist">
+        <span>📝</span> Create Watchlist
+    </div>
+    <div class="sidebar-item" data-page="favorites">
+        <span>💗</span> Favorites
+    </div>
+</div>
+
+<div class="container">
+    <div class="header">
+    </div>
+
+    <div class="top-bar">
+        <div class="menu-icon" id="menuBtn">☰</div>
+        <div class="app-icon">
+            <img src="NuAgeLOGO.png" alt="NuAgeBiskop Logo" style="height: 24px; vertical-align: middle;">
+        </div>
+        <div class="search-box">
+            <input type="text" placeholder="Search movies..." id="searchInput">
+            <span class="search-icon">🔍</span>
+        </div>
+        <button class="sign-up-btn">Sign Up</button>
+    </div>
+
+    <div class="content" id="content">
+        <div id="homePage">
+            <div class="hero">
+                <h1>HERO</h1>
+                <p>(slideshow of trending movies)</p>
+                <p style="margin-top: 10px; font-size: 16px;">movie name</p>
+            </div>
+
+            <h2 class="section-title">Movies By Release Date</h2>
+            <p style="color: #aaaaaa; margin-bottom: 20px;">(20 movies) - genre must show on movie card & release date &
+                rating</p>
+
+            <div class="movie-grid" id="movieGrid"></div>
+        </div>
+
+        <div id="favoritesPage" style="display: none;">
+            <h2 class="section-title">My Favorites</h2>
+            <div class="movie-grid" id="favoritesGrid"></div>
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-state-icon">⭐</div>
+                <h3>No favorites yet</h3>
+                <p>Start adding movies to your favorites!</p>
+            </div>
+        </div>
+
+        <div id="watchlistPage" style="display: none;">
+            <h2 class="section-title">Create Watchlist</h2>
+            <div class="empty-state">
+                <div class="empty-state-icon">📝</div>
+                <h3>Watchlist Feature</h3>
+                <p>Coming soon!</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+
+        2025 NuAgeBiskop ©
+    </div>
+</div>
