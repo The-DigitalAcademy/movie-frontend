@@ -63,21 +63,21 @@ export class BiskopAuthenticationService {
   /**
    * Sign in with email and password
    */
-  async signIn(email: string, password: string): Promise<void> {
-    try {
-      const credential = await this.afAuth.signInWithEmailAndPassword(email, password);
-      if (!credential.user) {
-        throw new Error('No user returned after authentication');
-      }
-      console.log('User successfully authenticated:', credential.user.uid);
-      try {
-      } catch (updateError) {
-        console.warn('Could not update user data but login successful:', updateError);
-      }
-      this.router.navigate(['/']);
-    } catch (error: any) {
-      console.error('Sign in error:', error);
+  async signIn(email: string, password: string): Promise<string> {
+    let credential = null;
+
+    credential = await this.afAuth.signInWithEmailAndPassword(email, password);
+    if (!credential.user) {
+      throw new Error('No user returned after authentication');
     }
+    console.log('User successfully authenticated:', credential.user.uid);
+    
+    try {
+    } catch (updateError) {
+      console.warn('Could not update user data but login successful:', updateError);
+    }
+    
+    return credential.user.uid;
   }
 
   async signInWithGoogleAccount(): Promise<void> {

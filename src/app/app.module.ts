@@ -18,10 +18,21 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { variables } from './enviroments/environments';
-import { RouterModule } from '@angular/router'
+import { RouterModule } from '@angular/router';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { CommonModule } from '@angular/common';
 import { MovieDetailsComponent } from './components/movie-details/movie-details.component';
+
+// NgRx imports
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+// Import your reducers and effects
+import { authReducer } from './store/auth/auth.reducer';
+import { watchlistReducer } from './store/watchlist/watchlist.reducer';
+import { AuthEffects } from './store/auth/auth.effects';
+import { WatchlistEffects } from './store/watchlist/watchlist.effects';
 
 @NgModule({
   declarations: [
@@ -48,7 +59,19 @@ import { MovieDetailsComponent } from './components/movie-details/movie-details.
     AngularFireModule.initializeApp(variables.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    CommonModule
+    CommonModule,
+    // NgRx Store with reducers
+    StoreModule.forRoot({
+      auth: authReducer,
+      watchlist: watchlistReducer
+    }),
+    // NgRx Effects with your effects classes
+    EffectsModule.forRoot([AuthEffects, WatchlistEffects]),
+    // Redux DevTools
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: false,
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
