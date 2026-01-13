@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { BiskopAuthenticationService } from 'src/app/services/biskop-authentication.service';
 import * as AuthActions from 'src/app/store/auth/auth.actions';
 
-// SignIn component handles user authentication with email/password and Google sign-in
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -13,6 +12,8 @@ import * as AuthActions from 'src/app/store/auth/auth.actions';
   standalone: false
 })
 export class SigninComponent implements OnInit {
+
+  // form that holds email and password
   signinForm: FormGroup;
 
   constructor(
@@ -21,6 +22,7 @@ export class SigninComponent implements OnInit {
     private store: Store,
     private router: Router
   ) {
+    // create the form
     this.signinForm = this.formBuilder.group({
       email: [''],
       password: [''],
@@ -30,19 +32,41 @@ export class SigninComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onSubmit(): void {
-    if(this.signinForm.valid){
+  /**
+   * Login using email and password
+   */
+  async onSubmit(): Promise<void> {
+    // check if form is valid
+    if (this.signinForm.valid) {
+
       const email = this.signinForm.get('email')?.value;
       const password = this.signinForm.get('password')?.value;
-      this.store.dispatch(AuthActions.signIn({ email, password }));
-      this.router.navigate(['/']);
+
+      try {
+        // call auth service login
+        await this.authentication.signIn(email, password);
+
+        // if login succeeds, fake token is already saved
+        console.log('Login successful');
+
+      } catch (error) {
+        console.error('Login failed', error);
+      }
     }
   }
 
-  signInWithGoogle(): void {
-    this.authentication.signInWithGoogleAccount();
+  /**
+   * Login using Google
+   */
+  async signInWithGoogle(): Promise<void> {
+    try {
+      await this.authentication.signInWithGoogleAccount();
+    } catch (error) {
+      console.error('Google sign-in failed', error);
+    }
   }
 
+  // form helpers (used in template)
   get email() {
     return this.signinForm.get('email');
   }
