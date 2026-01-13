@@ -13,7 +13,7 @@ import { Actor } from '../models/actor.model';
 })
 export class MovieService {
   url = variables.BASE_URL;
-  apiKey = variables.API_KEY;
+
   http = inject(HttpClient);
 
   // Store movies locally after fetching from API
@@ -29,17 +29,7 @@ export class MovieService {
 
   // Method to get all movies from API
   getMoviesFromApi(path: string): Observable<ApiResponse> {
-    const headers = new HttpHeaders({
-      'x-rapidapi-key': this.apiKey,
-      'x-rapidapi-host': 'imdb236.p.rapidapi.com',
-    });
-    const target_url = this.url + `${path}`;
-    console.log(`${target_url}`);
-    return this.http.get<ApiResponse>(target_url, { headers }).pipe(
-      tap(() => {
-        toArray();
-      })
-    );
+
   }
 
   // Transform API movie to app Movie format
@@ -144,20 +134,14 @@ export class MovieService {
   }
 
   getMovieActorsByMovieId(movieId: string) : Observable<Actor[]> {
-    const headers = new HttpHeaders({
-      'x-rapidapi-key': this.apiKey,
-      'x-rapidapi-host': 'imdb236.p.rapidapi.com'
-    });
+
     const target_url = `${this.url}/api/imdb/${movieId}/cast`;
-    return this.http.get<Actor[]>(target_url, {headers});
+    return this.http.get<Actor[]>(target_url);
   }
 
   getMovieDetail(movieid: string) : Observable<Movie> {
-        const headers = new HttpHeaders({
-      'x-rapidapi-key': this.apiKey,
-      'x-rapidapi-host': 'imdb236.p.rapidapi.com'
-    });
+
     const target_url = `${this.url}/api/imdb/${movieid}`;
-    return this.http.get<Movie>(target_url, {headers});
+    return this.http.get<Movie>(target_url);
   }
 }
