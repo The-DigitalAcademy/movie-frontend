@@ -1,5 +1,5 @@
 export const variables = {
-    BASE_URL: "https://imdb236.p.rapidapi.com",
+    BASE_URL: "https://localhost:8080",
     API_KEY: "0666c80a67mshb18f41f1105b978p1f9d3ejsnb29af7582625",
     firebaseConfig: {
         apiKey: "AIzaSyDYK2GxyQ6M0Izvfc3Elrsg-4VVYYxe1hw",
