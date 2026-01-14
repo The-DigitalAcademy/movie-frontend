@@ -24,7 +24,7 @@
             <span class="search-icon">🔍</span>
         </div>
         <button *ngIf="!isUserSession" class="sign-up-btn" (click)="navigateTo('/signin')">Sign In</button>
-         <button *ngIf="isUserSession" class="sign-up-btn" (click)="logout()">Logout</button>
+         <button *ngIf="isUserSession" class="sign-up-btn" (click)="logout()">Sign Out</button>
     </div>
 
     <div class="content" id="content">

@@ -9,6 +9,9 @@ import { variables } from '../enviroments/environments';
   providedIn: 'root'
 })
 export class BiskopAuthenticationService {
+  // isLoggedIn() {
+  //   throw new Error('Method not implemented.');
+  // }
   apiUrl: string = `${variables.BASE_URL}/api/auth`;
   // key used to store fake token
   private TOKEN_KEY = 'auth_token';
@@ -72,10 +75,14 @@ export class BiskopAuthenticationService {
   /**
    * Check if user is logged in
    */
-  // isLoggedIn(): Observable<boolean> {
-  //   return true;
-  // }
+  isLoggedIn(): boolean {
+    return true;
+  }
 
+
+  //   isLoggedIn(): boolean {
+  //   return !!localStorage.getItem(this.TOKEN_KEY);
+  // }
   /**
    * Get current user (one-time)
    */
