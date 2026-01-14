@@ -13,6 +13,7 @@ import { AuthState } from 'src/app/store/auth/auth.state';
   styleUrls: ['./favorites.component.css'],
   standalone: false
 })
+
 export class FavoritesComponent implements OnInit {
   favorites: Movie[] = [];
   isUserSession: SignInRes | null = null;

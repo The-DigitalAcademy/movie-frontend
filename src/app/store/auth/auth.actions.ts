@@ -8,7 +8,7 @@ export const signIn = createAction(
 
 export const signInSuccess = createAction(
   '[Auth] Sign In Success',
-  props<{ user: SignInReq }>()
+  props<{ user: any }>()
 );
 
 export const signInFailure = createAction(
@@ -18,7 +18,7 @@ export const signInFailure = createAction(
 
 export const signUp = createAction(
   '[Auth] Sign Up',
-  props<{ email: string; password: string; firstname?: string; lastname?: string }>()
+  props<{ email: string; password: string; username: string }>()
 );
 
 export const signUpSuccess = createAction(
@@ -32,3 +32,11 @@ export const signUpFailure = createAction(
 );
 
 export const signOut = createAction('[Auth] Sign Out');
+
+// New action to initialize auth from localStorage
+export const initAuth = createAction('[Auth] Init Auth');
+
+export const initAuthSuccess = createAction(
+  '[Auth] Init Auth Success',
+  props<{ user: any }>()
+);

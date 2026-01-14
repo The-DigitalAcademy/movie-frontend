@@ -4,7 +4,7 @@
 
     <!-- Instead of this, use movie-card from Neo -->
     <div class="favourite-movie-grid">
-        
+    
         <div class="favourite-movie-card" *ngFor="let movie of favorites">
             <div class="favourite-movie-remove">
                 <span (click)="removeFromFavorites(movie.id)" class="favourite-movie-remove-icon">×</span>

@@ -61,7 +61,7 @@ import { AUTH_FEATURE_KEY } from './store/auth/auth.state';
 
     //Feature Store
     StoreModule.forFeature(AUTH_FEATURE_KEY, authReducer),
-    //add more feature keys (TODO) 
+    //add more feature keys  
 
     //Root Effect
     EffectsModule.forRoot([]),
@@ -69,7 +69,7 @@ import { AUTH_FEATURE_KEY } from './store/auth/auth.state';
     //Feature Effects
     EffectsModule.forFeature([
       AuthEffects
-      //your effects (TODO) 
+      //your effects
     ]),
 
     StoreDevtoolsModule.instrument({

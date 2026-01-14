@@ -1,7 +1,7 @@
-import { EnvironmentInjector, inject, Injectable, runInInjectionContext } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, map, take } from 'rxjs';
-import { SignInReq, SignInRes, SignUpReq, SignUpRes, User } from '../models/user.model';
+import { Observable, tap } from 'rxjs';
+import { SignInReq, SignInRes, SignUpReq, SignUpRes } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { variables } from '../enviroments/environments';
 
@@ -9,55 +9,51 @@ import { variables } from '../enviroments/environments';
   providedIn: 'root'
 })
 export class BiskopAuthenticationService {
-  // isLoggedIn() {
-  //   throw new Error('Method not implemented.');
-  // }
   apiUrl: string = `${variables.BASE_URL}/api/auth`;
-  // key used to store fake token
-  private  TOKEN_KEY = 'auth_token';
+  //key useed to store fake token
+  private TOKEN_KEY = 'auth_token';
+  private USER_KEY = 'auth_user';
 
   constructor(
     private router: Router,
     private http: HttpClient
-  ) {
-    this.saveFakeToken();
-  }
-  
-  /**
-   * Create and store a fake token
-   * (Later this will come from backend)
-   */
-  private saveFakeToken(): void {
-    const fakeToken = 'FAKE_TOKEN_' + new Date().getTime();
-    console.log("Here is a token key",this.TOKEN_KEY);
-    console.log("Here is a generated fake tokkey",fakeToken);
-    localStorage.setItem(this.TOKEN_KEY, fakeToken);
-  }
-
-  /**
-   * Remove token from storage
-   */
-  private clearToken(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
-  }
+  ) {}
 
   /**
    * Sign up with email and password
    */
   signUp(body: SignUpReq): Observable<SignUpRes> {
-    // save fake token after successful signup
-    this.saveFakeToken();
-
-    return this.http.post<SignUpRes>(`${this.apiUrl}/signup`, body);
+    return this.http.post<SignUpRes>(`${this.apiUrl}/signup`, body).pipe(
+      tap(response => {
+        // Generate a temporary token since backend doesn't provide one
+        const tempToken = 'AUTH_TOKEN_' + new Date().getTime() + '_' + Math.random();
+        this.saveToken(tempToken);
+        
+        // Save user data (create from request since response only has message)
+        const user = { email: body.email, username: body.username };
+        this.saveUser(user);
+      })
+    );
   }
 
   /**
    * Sign in with email and password
    */
-  signIn(body: SignInReq):  Observable<SignInRes>{
-    this.saveFakeToken();
-
-    return this.http.post<SignInRes>(`${this.apiUrl}/login`, body)
+  signIn(body: SignInReq): Observable<SignInRes> {
+    return this.http.post<SignInRes>(`${this.apiUrl}/login`, body).pipe(
+      tap(response => {
+        // Generate a temporary token since backend doesn't provide one
+        const tempToken = 'AUTH_TOKEN_' + new Date().getTime() + '_' + Math.random();
+        this.saveToken(tempToken);
+        
+        // Save user data from response
+        const user = { 
+          email: response.email, 
+          username: response.username 
+        };
+        this.saveUser(user);
+      })
+    );
   }
 
   /**
@@ -65,9 +61,8 @@ export class BiskopAuthenticationService {
    */
   async signOut(): Promise<void> {
     try {
-      // remove token on logout
       this.clearToken();
-      
+      this.clearUser();
       this.router.navigate(['/signin']);
       console.log('User logged out');
     } catch (error) {
@@ -80,18 +75,49 @@ export class BiskopAuthenticationService {
    * Check if user is logged in
    */
   isLoggedIn(): boolean {
-    return !!localStorage.getItem(this.TOKEN_KEY);;
+    return !!localStorage.getItem(this.TOKEN_KEY);
   }
 
-
-  //   isLoggedIn(): boolean {
-  //   return !!localStorage.getItem(this.TOKEN_KEY);
-  // }
   /**
-   * Get current user (one-time)
+   * Get stored token
    */
-  // getCurrentUser(): Observable<User | null> {
-  //   return this.user$.pipe(take(1));
-  // }
+  public getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
 
+  /**
+   * Get stored user
+   */
+  public getStoredUser(): any | null {
+    const userJson = localStorage.getItem(this.USER_KEY);
+    return userJson ? JSON.parse(userJson) : null;
+  }
+
+  /**
+   * Save token to localStorage
+   */
+  private saveToken(token: string): void {
+    localStorage.setItem(this.TOKEN_KEY, token);
+  }
+
+  /**
+   * Save user to localStorage
+   */
+  private saveUser(user: any): void {
+    localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+  }
+
+  /**
+   * Remove token from storage
+   */
+  private clearToken(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
+  }
+
+  /**
+   * Remove user from storage
+   */
+  private clearUser(): void {
+    localStorage.removeItem(this.USER_KEY);
+  }
 }
