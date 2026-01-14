@@ -14,12 +14,14 @@ export class BiskopAuthenticationService {
   // }
   apiUrl: string = `${variables.BASE_URL}/api/auth`;
   // key used to store fake token
-  private TOKEN_KEY = 'auth_token';
+  private  TOKEN_KEY = 'auth_token';
 
   constructor(
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) {
+    this.saveFakeToken();
+  }
   
   /**
    * Create and store a fake token
@@ -27,6 +29,8 @@ export class BiskopAuthenticationService {
    */
   private saveFakeToken(): void {
     const fakeToken = 'FAKE_TOKEN_' + new Date().getTime();
+    console.log("Here is a token key",this.TOKEN_KEY);
+    console.log("Here is a generated fake tokkey",fakeToken);
     localStorage.setItem(this.TOKEN_KEY, fakeToken);
   }
 
@@ -76,7 +80,7 @@ export class BiskopAuthenticationService {
    * Check if user is logged in
    */
   isLoggedIn(): boolean {
-    return true;
+    return !!localStorage.getItem(this.TOKEN_KEY);;
   }
 
 
