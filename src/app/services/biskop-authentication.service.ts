@@ -1,7 +1,7 @@
 import { EnvironmentInjector, inject, Injectable, runInInjectionContext } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, map, take } from 'rxjs';
-import { User } from '../models/user.model';
+import { SignInReq, SignInRes, SignUpReq, SignUpRes, User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { variables } from '../enviroments/environments';
 
@@ -9,7 +9,7 @@ import { variables } from '../enviroments/environments';
   providedIn: 'root'
 })
 export class BiskopAuthenticationService {
-  apiUrl: string = variables.BASE_URL;
+  apiUrl: string = `${variables.BASE_URL}/api/auth`;
   // key used to store fake token
   private TOKEN_KEY = 'auth_token';
 
@@ -37,23 +37,21 @@ export class BiskopAuthenticationService {
   /**
    * Sign up with email and password
    */
-  signUp(body: any): Observable<any> {
+  signUp(body: SignUpReq): Observable<SignUpRes> {
     // save fake token after successful signup
     this.saveFakeToken();
-    return this.http.post<any>(this.apiUrl, body)
+
+    return this.http.post<SignUpRes>(`${this.apiUrl}/signup`, body);
   }
 
   /**
    * Sign in with email and password
    */
-  // async signIn(email: string, password: string): Promise<string> {
-  //   let credential = null;
+  signIn(body: SignInReq):  Observable<SignInRes>{
+    this.saveFakeToken();
 
-  //   try {
-  //   } catch (updateError) {
-  //     console.warn('Could not update user data but login successful:', updateError);
-  //   }
-  // }
+    return this.http.post<SignInRes>(`${this.apiUrl}/login`, body)
+  }
 
   /**
    * Sign out user

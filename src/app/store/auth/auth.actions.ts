@@ -1,13 +1,14 @@
 import { createAction, props } from '@ngrx/store';
+import { SignInReq } from 'src/app/models/user.model';
 
 export const signIn = createAction(
   '[Auth] Sign In',
-  props<{ email: string; password: string }>()
+  props<{ credentials: SignInReq }>()
 );
 
 export const signInSuccess = createAction(
   '[Auth] Sign In Success',
-  props<{ token: string }>()
+  props<{ user: SignInReq }>()
 );
 
 export const signInFailure = createAction(

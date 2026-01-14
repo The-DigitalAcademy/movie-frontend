@@ -28,9 +28,9 @@ export class MovieService {
   }
 
   // Method to get all movies from API
-  getMoviesFromApi(path: string): Observable<ApiResponse> {
+  // getMoviesFromApi(path: string): Observable<ApiResponse> {
 
-  }
+  // }
 
   // Transform API movie to app Movie format
   public transformApiMovie(movie: Movie) {
@@ -46,22 +46,22 @@ export class MovieService {
   }
 
   // Load movies from API
-  loadMovies(path: string = '/api/imdb/top250-movies') {
-    this.getMoviesFromApi(path)
-      .pipe(
-        tap((response) => {
-          this.moviesDataSubject.next(response.data ?? []);
-        })
-      )
-      .subscribe({
-        next: (response) => {
-          console.log('Movies loaded successfully:', response.data?.length);
-        },
-        error: (error) => {
-          console.error('Error loading movies:', error);
-        },
-      });
-  }
+  // loadMovies(path: string = '/api/imdb/top250-movies') {
+  //   this.getMoviesFromApi(path)
+  //     .pipe(
+  //       tap((response) => {
+  //         this.moviesDataSubject.next(response.data ?? []);
+  //       })
+  //     )
+  //     .subscribe({
+  //       next: (response) => {
+  //         console.log('Movies loaded successfully:', response.data?.length);
+  //       },
+  //       error: (error) => {
+  //         console.error('Error loading movies:', error);
+  //       },
+  //     });
+  // }
 
   // Get all movies (returns Observable)
   getMovies(): Observable<Movie[]> {
@@ -134,13 +134,11 @@ export class MovieService {
   }
 
   getMovieActorsByMovieId(movieId: string) : Observable<Actor[]> {
-
     const target_url = `${this.url}/api/imdb/${movieId}/cast`;
     return this.http.get<Actor[]>(target_url);
   }
 
   getMovieDetail(movieid: string) : Observable<Movie> {
-
     const target_url = `${this.url}/api/imdb/${movieid}`;
     return this.http.get<Movie>(target_url);
   }

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { isDevMode, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -14,9 +14,6 @@ import { MovieCardComponent } from './components/movie-card/movie-card.component
 import { SignupComponent } from './components/signup/signup.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { SignoutComponent } from './components/signout/signout.component';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { variables } from './enviroments/environments';
 import { RouterModule } from '@angular/router';
 import { NavigationComponent } from './components/navigation/navigation.component';
@@ -33,6 +30,7 @@ import { authReducer } from './store/auth/auth.reducer';
 import { watchlistReducer } from './store/watchlist/watchlist.reducer';
 import { AuthEffects } from './store/auth/auth.effects';
 import { WatchlistEffects } from './store/watchlist/watchlist.effects';
+import { AUTH_FEATURE_KEY } from './store/auth/auth.state';
 
 @NgModule({
   declarations: [
@@ -56,21 +54,27 @@ import { WatchlistEffects } from './store/watchlist/watchlist.effects';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    AngularFireModule.initializeApp(variables.firebaseConfig),
-    AngularFireAuthModule,
-    AngularFirestoreModule,
     CommonModule,
-    // NgRx Store with reducers
-    StoreModule.forRoot({
-      auth: authReducer,
-      watchlist: watchlistReducer
-    }),
-    // NgRx Effects with your effects classes
-    EffectsModule.forRoot([AuthEffects, WatchlistEffects]),
-    // Redux DevTools
+
+    //Root Store
+    StoreModule.forRoot({}),
+
+    //Feature Store
+    StoreModule.forFeature(AUTH_FEATURE_KEY, authReducer),
+    //add more feature keys (TODO) 
+
+    //Root Effect
+    EffectsModule.forRoot([]),
+
+    //Feature Effects
+    EffectsModule.forFeature([
+      AuthEffects
+      //your effects (TODO) 
+    ]),
+
     StoreDevtoolsModule.instrument({
       maxAge: 25,
-      logOnly: false,
+      logOnly: !isDevMode()
     })
   ],
   providers: [],

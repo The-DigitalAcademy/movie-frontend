@@ -11,29 +11,14 @@ export class AuthEffects {
   signIn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.signIn),
-      mergeMap(({ email, password }) =>
-        from(this.authService.signIn(email, password)).pipe( // Wrap with from()
+      mergeMap(({ credentials }) =>
+        from(this.authService.signIn(credentials)).pipe( // Wrap with from()
           map((res: any) => {
             console.log(res)
-              return AuthActions.signInSuccess({ token: res })
+              return AuthActions.signInSuccess({ user: res })
             }
           ),
           catchError(err => of(AuthActions.signInFailure({ error: err })))
-        )
-      )
-    )
-  );
-
-  // Sign Up effect
-  signUp$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(AuthActions.signUp),
-      mergeMap(({ email, password, firstname }) =>
-        from(this.authService.signUp(email, password, firstname)).pipe( // Wrap with from()
-          map((res: any) =>
-            AuthActions.signUpSuccess({ user: res.user, token: res.token })
-          ),
-          catchError(err => of(AuthActions.signUpFailure({ error: err })))
         )
       )
     )

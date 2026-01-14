@@ -7,3 +7,26 @@ export interface User {
     createdAt?: number;
     lastLogin?: number;
 }
+
+export interface SignUpReq {
+    username: string;
+    email: string;
+    password: string; 
+}
+
+export interface SignUpRes {
+    message: string;
+}
+
+export interface SignInReq{
+    email: string;
+    password: string;
+}
+
+export interface SignInRes{
+
+    username: string;
+    email: string;
+    password: string
+
+}

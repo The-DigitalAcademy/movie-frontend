@@ -26,7 +26,7 @@ const routes: Routes = [
   { path: "signup", component: SignupComponent },
   { path: "signin", component: SigninComponent },
 
-  // 🔒 protected routes
+  //  protected routes
   {
     path: "watchlist",
     component: WatchlistComponent,
