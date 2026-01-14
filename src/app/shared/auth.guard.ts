@@ -22,6 +22,7 @@ export class AuthGuard implements CanActivate {
       return true; // allow access
     }
 
+
     // if NOT logged in
     console.warn('Access denied. Redirecting to signup.');
 

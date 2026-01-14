@@ -6,6 +6,8 @@ import { SignInReq } from 'src/app/models/user.model';
 import { BiskopAuthenticationService } from 'src/app/services/biskop-authentication.service';
 import * as AuthActions from "src/app/store/auth/auth.actions"
 import { AuthState } from 'src/app/store/auth/auth.state';
+import { Actions, ofType } from '@ngrx/effects';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-signin',
@@ -15,7 +17,6 @@ import { AuthState } from 'src/app/store/auth/auth.state';
 })
 export class SigninComponent implements OnInit {
 
-  // form that holds email and password
   signinForm: FormGroup;
   credentials: SignInReq = {
     email: "",
@@ -26,9 +27,9 @@ export class SigninComponent implements OnInit {
     private authentication: BiskopAuthenticationService,
     private formBuilder: FormBuilder,
     private store: Store<AuthState>,
-    private router: Router
+    private router: Router,
+    private actions$: Actions
   ) {
-    // create the form
     this.signinForm = this.formBuilder.group({
       email: [''],
       password: [''],
@@ -42,9 +43,7 @@ export class SigninComponent implements OnInit {
    * Login using email and password
    */
   async onSubmit(): Promise<void> {
-    // check if form is valid
     if (this.signinForm.valid) {
-
       const email = this.signinForm.get('email')?.value;
       const password = this.signinForm.get('password')?.value;
       
@@ -53,24 +52,33 @@ export class SigninComponent implements OnInit {
         password
       }
 
-      try {
-        // call auth service login
-        // await this.authentication.signIn(email, password);
-        this.store.dispatch(
-          AuthActions.signIn({
-            credentials: this.credentials
-          })
-        )
-        // if login succeeds, fake token is already saved
-       this.router.navigate(["./home"])
+      // Dispatch sign in action
+      this.store.dispatch(
+        AuthActions.signIn({
+          credentials: this.credentials
+        })
+      );
 
-      } catch (error) {
+      // Wait for sign in success before navigating
+      this.actions$.pipe(
+        ofType(AuthActions.signInSuccess),
+        take(1)
+      ).subscribe(() => {
+        console.log('Sign in successful, navigating to home');
+        this.router.navigate(['./home']);
+      });
+
+      // Handle sign in failure
+      this.actions$.pipe(
+        ofType(AuthActions.signInFailure),
+        take(1)
+      ).subscribe((error) => {
         console.error('Login failed', error);
-      }
+        // You can show an error message to the user here
+      });
     }
   }
 
-  // // form helpers (used in template)
   get email() {
     return this.signinForm.get('email');
   }
