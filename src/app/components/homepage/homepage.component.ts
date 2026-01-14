@@ -59,7 +59,9 @@ export class HomepageComponent implements OnInit, OnDestroy {
     private router: Router, 
     private movieService : MovieService,
     private store: Store<AuthState>
-  ) {}
+  ) {
+    
+  }
 
   ngOnInit() {
     this.startAutoSlide();

@@ -10,6 +10,7 @@ import { variables } from '../enviroments/environments';
 })
 export class BiskopAuthenticationService {
   apiUrl: string = `${variables.BASE_URL}/api/auth`;
+  //key useed to store fake token
   private TOKEN_KEY = 'auth_token';
   private USER_KEY = 'auth_user';
 
