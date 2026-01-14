@@ -1,5 +1,9 @@
+import { SignInRes } from "src/app/models/user.model";
+
+export const AUTH_FEATURE_KEY = "auth"
+
 export interface AuthState {
-  user: { email: string; name?: string } | null;
+  user: SignInRes | null;
   token: string | null;
   loading: boolean;
   error: any;

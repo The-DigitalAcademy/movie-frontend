@@ -13,9 +13,9 @@ export const authReducer = createReducer(
   })),
 
   // When sign in or sign up succeeds
-  on(AuthActions.signInSuccess, AuthActions.signUpSuccess, (state, { token }) => ({
+  on(AuthActions.signInSuccess, AuthActions.signUpSuccess, (state, { user }) => ({
     ...state,
-    token,
+    user,
     loading: false
   })),
 

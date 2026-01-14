@@ -1,40 +1,23 @@
-import { inject, Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { EnvironmentInjector, inject, Injectable, runInInjectionContext } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, map, take } from 'rxjs';
-import { User } from '../models/user.model';
-import { GoogleAuthProvider } from '@angular/fire/auth';
+import { SignInReq, SignInRes, SignUpReq, SignUpRes, User } from '../models/user.model';
+import { HttpClient } from '@angular/common/http';
+import { variables } from '../enviroments/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BiskopAuthenticationService {
-
-  // Observable holding authenticated user data
-  user$: Observable<User | null>;
-
-  private afAuth = inject(AngularFireAuth);
-
+  apiUrl: string = `${variables.BASE_URL}/api/auth`;
   // key used to store fake token
   private TOKEN_KEY = 'auth_token';
 
-  constructor(private router: Router) {
-    this.user$ = this.afAuth.authState.pipe(
-      map(user => {
-        if (!user) return null;
-
-        return {
-          uid: user.uid,
-          email: user.email || '',
-          displayName: user.displayName || '',
-          photoURL: user.photoURL || '',
-          emailVerified: user.emailVerified || false,
-          lastLogin: Date.now()
-        } as User;
-      })
-    );
-  }
-
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {}
+  
   /**
    * Create and store a fake token
    * (Later this will come from backend)
@@ -54,68 +37,20 @@ export class BiskopAuthenticationService {
   /**
    * Sign up with email and password
    */
-  async signUp(email: string, password: string, displayName?: string): Promise<void> {
-    try {
-      const credential = await this.afAuth.createUserWithEmailAndPassword(email, password);
-      const user = credential.user;
+  signUp(body: SignUpReq): Observable<SignUpRes> {
+    // save fake token after successful signup
+    this.saveFakeToken();
 
-      if (user && displayName) {
-        await user.updateProfile({ displayName });
-      }
-
-      // save fake token after successful signup
-      this.saveFakeToken();
-
-      this.router.navigate(['/']);
-    } catch (error) {
-      console.error('Sign up error:', error);
-      throw error;
-    }
+    return this.http.post<SignUpRes>(`${this.apiUrl}/signup`, body);
   }
 
   /**
    * Sign in with email and password
    */
-  async signIn(email: string, password: string): Promise<void> {
-    try {
-      const credential = await this.afAuth.signInWithEmailAndPassword(email, password);
+  signIn(body: SignInReq):  Observable<SignInRes>{
+    this.saveFakeToken();
 
-      if (!credential.user) {
-        throw new Error('No user returned after login');
-      }
-
-      // save fake token after successful login
-      this.saveFakeToken();
-
-      console.log('User logged in:', credential.user.uid);
-      this.router.navigate(['/']);
-    } catch (error) {
-      console.error('Sign in error:', error);
-    }
-  }
-
-  /**
-   * Sign in with Google
-   */
-  async signInWithGoogleAccount(): Promise<void> {
-    const provider = new GoogleAuthProvider();
-    provider.addScope('email');
-    provider.addScope('profile');
-
-    try {
-      const result = await this.afAuth.signInWithPopup(provider);
-
-      if (result.user) {
-        // save fake token
-        this.saveFakeToken();
-
-        console.log('Google login successful');
-        this.router.navigate(['/']);
-      }
-    } catch (error) {
-      console.error('Google auth error:', error);
-      throw error;
-    }
+    return this.http.post<SignInRes>(`${this.apiUrl}/login`, body)
   }
 
   /**
@@ -123,11 +58,9 @@ export class BiskopAuthenticationService {
    */
   async signOut(): Promise<void> {
     try {
-      await this.afAuth.signOut();
-
       // remove token on logout
       this.clearToken();
-
+      
       this.router.navigate(['/signin']);
       console.log('User logged out');
     } catch (error) {
@@ -137,29 +70,17 @@ export class BiskopAuthenticationService {
   }
 
   /**
-   * Reset password
+   * Check if user is logged in
    */
-  async resetPassword(email: string): Promise<void> {
-    try {
-      await this.afAuth.sendPasswordResetEmail(email);
-    } catch (error) {
-      console.error('Reset password error:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Check if user is logged in (token-based)
-   * This is what Auth Guards will use
-   */
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem(this.TOKEN_KEY);
-  }
+  // isLoggedIn(): Observable<boolean> {
+  //   return true;
+  // }
 
   /**
    * Get current user (one-time)
    */
-  getCurrentUser(): Observable<User | null> {
-    return this.user$.pipe(take(1));
-  }
+  // getCurrentUser(): Observable<User | null> {
+  //   return this.user$.pipe(take(1));
+  // }
+
 }
