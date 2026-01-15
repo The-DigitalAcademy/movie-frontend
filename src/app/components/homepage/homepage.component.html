@@ -14,9 +14,6 @@
 </div>
 
 <div class="container">
-    <div class="header">
-    </div>
-
     <div class="top-bar">
         <div class="menu-icon" id="menuBtn" (click)="toggleSidebar()">☰</div>
         <div class="app-icon">
@@ -26,7 +23,8 @@
             <input type="text" placeholder="Search movies..." id="searchInput">
             <span class="search-icon">🔍</span>
         </div>
-        <button class="sign-up-btn" (click)="navigateTo('/signup')">Sign Up</button>
+        <button *ngIf="!isUserSession" class="sign-up-btn" (click)="navigateTo('/signin')">Sign In</button>
+         <button *ngIf="isUserSession" class="sign-up-btn" (click)="logout()">Sign Out</button>
     </div>
 
     <div class="content" id="content">

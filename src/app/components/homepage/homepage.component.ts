@@ -1,7 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Movie } from 'src/app/models/movie.model';
+import { SignInReq, SignInRes } from 'src/app/models/user.model';
 import { MovieService } from 'src/app/services/movie.service';
+import { signOut } from 'src/app/store/auth/auth.actions';
+import { selectUser } from 'src/app/store/auth/auth.selectors';
+import { AuthState } from 'src/app/store/auth/auth.state';
+import * as AuthActions from "src/app/store/auth/auth.actions";
 
 export interface HeroSlide {
   image: string;
@@ -47,12 +53,22 @@ export class HomepageComponent implements OnInit, OnDestroy {
 
   // Sidebar properties
   isSidebarActive = false;
+  isUserSession: SignInRes | null = null;
 
-  constructor(private router: Router, private movieService : MovieService) {}
+  constructor(
+    private router: Router, 
+    private movieService : MovieService,
+    private store: Store<AuthState>
+  ) {
+    
+  }
 
   ngOnInit() {
     this.startAutoSlide();
     this.fetchAndProcessMovies(); 
+    this.store.select(selectUser).subscribe(
+      userRes => this.isUserSession = userRes
+    )
   }
 
   ngOnDestroy() {
@@ -64,10 +80,9 @@ export class HomepageComponent implements OnInit, OnDestroy {
   // --- CORE DATA HANDLING & SORTING ---
 
   fetchAndProcessMovies() {
-    this.movieService.getMoviesFromApi("/api/imdb/top250-movies").subscribe({
+    this.movieService.getMoviesFromApi("/movies").subscribe({
       next: (resp) => {
         let moviesData: Movie[] = [];
-
         // Safely extract the movie array from response
         if (resp && Array.isArray(resp)) {
           moviesData = resp;
@@ -203,5 +218,12 @@ export class HomepageComponent implements OnInit, OnDestroy {
   navigateTo(route: string) {
     this.router.navigate([route]);
     this.closeSidebar();
+  }
+
+  logout() {
+    this.store.dispatch(
+      AuthActions.signOut()
+    )
+    this.router.navigate(["./signin"])
   }
 }

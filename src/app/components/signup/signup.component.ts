@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { SignUpReq } from 'src/app/models/user.model';
 import { BiskopAuthenticationService } from 'src/app/services/biskop-authentication.service';
 
 @Component({
@@ -15,16 +17,21 @@ export class SignupComponent {
   confirmPassword: string = '';
   terms: boolean = false;
 
-  constructor(private authentication: BiskopAuthenticationService) {}
+  constructor(private authentication: BiskopAuthenticationService, private router: Router) {}
 
   onSubmit(): void {
-    if(this.email && this.password && this.password === this.confirmPassword && this.terms){
-      this.authentication.signUp(this.email, this.password);
+    const signUpReq: SignUpReq = {
+      username: this.firstname + " " + this.lastname,
+      email: this.email,
+      password: this.password
     }
-  }
 
-  signUpWithGoogle(): void {
-    this.authentication.signInWithGoogleAccount();
+    if(this.email && this.password && this.password === this.confirmPassword){
+      this.authentication.signUp(signUpReq).subscribe({
+        next: response => this.router.navigate(['/signin']),
+        error: err => console.log(err)
+      });
+    }
   }
 
   calculatePasswordStrength(): number {

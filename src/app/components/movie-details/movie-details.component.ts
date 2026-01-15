@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Actor } from 'src/app/models/actor.model';
 import { Movie } from 'src/app/models/movie.model';
 import { MovieService } from 'src/app/services/movie.service';
@@ -11,127 +11,104 @@ import { WatchlistService } from 'src/app/services/watchlist.service';
   styleUrls: ['./movie-details.component.css']
 })
 export class MovieDetailsComponent implements OnInit {
-  movie!: Movie;
+  movie?: Movie;
+  actors: Actor[] = [];
 
   isFavorite = false;
   showReviews = false;
   showReviewForm = false;
   showLoginModal = false;
-  isUserLoggedIn = false; // set true if testing login
-  // newReview = { rating: 0, text: '' };
-  movieDetails: Actor[] = [];
+  isUserLoggedIn = false;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private movieService: MovieService,
     private watchlistService: WatchlistService
   ) {}
 
   ngOnInit(): void {
-    this.loadMovie();
-  }
+    const idParam = this.route.snapshot.paramMap.get('id');
+    const id = idParam ? +idParam : 0; // convert string -> number
 
-  loadMovie(): void {
-    const id = this.route.snapshot.paramMap.get('movie_id') ?? '';
-    console.log(`Show path var id ${id}`);
-    if (id) {
-      this.loadMovieDetails(id);
-      this.getMovie(id);
-    } else {
-      console.error('Movie not found with ID:', id);
+    if (id <= 0) {
+      console.error('Invalid movie ID in route');
+      return;
     }
+
+    this.loadMovie(id);
+    this.loadActors(id);
   }
 
-  getMoviedetail(movieId : string){
-  }
-
-  loadMovieDetails(movieId: string): void {
-    this.movieService.getMovieActorsByMovieId(movieId).subscribe({
-      next: (resp) => {
-        console.log(`Movie details loaded: ${JSON.stringify(resp)}`);
-        this.movieDetails = resp;
+  loadMovie(id: number): void {
+    this.movieService.getMovieDetail(id).subscribe({
+      next: (movie) => {
+        this.movie = movie;
+        this.isFavorite = this.movieService.isFavorite(movie.id);
       },
-      error: (err) => {
-        console.error(`Error getting movie details: ${JSON.stringify(err)}`);
-      }
+      error: (err) => console.error('Error loading movie', err)
     });
   }
 
-  getMovie(movieid: string){
-    this.movieService.getMovieDetail(movieid).subscribe({
-      next: (resp) => {
-        console.log(`fetching movie ${resp}`);
-        this.movie = resp;
-      },
-      error: (err) => {
-        console.log(`DError fetching movie ${err}`);
-      }
-    })
+  loadActors(id: number): void {
+    this.movieService.getMovieActorsByMovieId(id).subscribe({
+      next: (actors) => (this.actors = actors),
+      error: (err) => console.error('Error loading actors', err)
+    });
   }
 
-  /** Watch button */
+  // ▶ Watch
   watchNow(): void {
-    if (this.movie) {
-      alert(`🎬 Playing ${this.movie.primaryTitle}...`);
-    } else {
-      alert('Movie not available');
-    }
+    if (!this.movie) return;
+    alert(`🎬 Playing ${this.movie.primaryTitle}...`);
+    
+  // Open trailer URL in a new browser tab
+  window.open(this.movie.trailer, '_blank');
   }
 
-  /** Toggle favorites */
+  // ❤️ Favorites
   toggleFavorite(): void {
     if (!this.movie) return;
-    
-    if (!this.isFavorite) {
-      this.movieService.addFavorite(this.movie);
-    } else {
+
+    if (this.movieService.isFavorite(this.movie.id)) {
       this.movieService.removeFavorite(this.movie.id);
-    }
-    this.isFavorite = !this.isFavorite;
-  }
-
-    toggleWatchlist(): void {
-    if (this.isInWatchlist()) {
-      this.removeFromWatchlist();
     } else {
-      this.addToWatchlist();
+      this.movieService.addFavorite(this.movie);
+    }
+
+    this.isFavorite = this.movieService.isFavorite(this.movie.id);
+  }
+
+  // 📌 Watchlist
+  toggleWatchlist(): void {
+    if (!this.movie) return;
+
+    if (this.watchlistService.isInWatchlist(this.movie.id)) {
+      this.watchlistService.removeFromWatchlist(this.movie.id);
+    } else {
+      this.watchlistService.addToWatchlist(this.movie);
     }
   }
 
-    addToWatchlist(): void {
-    this.watchlistService.addToWatchlist(this.movie);
-    // this.watchlistToggled.emit(this.movie);
+  isInWatchlist(): boolean {
+    return this.movie
+      ? this.watchlistService.isInWatchlist(this.movie.id)
+      : false;
   }
 
-    removeFromWatchlist(): void {
-    this.watchlistService.removeFromWatchlist(this.movie.id);
-    // this.watchlistToggled.emit(this.movie);
-  }
-
-    isInWatchlist(): boolean {
-    return this.watchlistService.isInWatchlist(this.movie.id);
-  }
-
-  /** Show/hide reviews */
+  // 💬 Reviews
   toggleReviews(): void {
     this.showReviews = !this.showReviews;
   }
 
-  /** Open review form or login modal */
   openReviewForm(): void {
-    if (this.isUserLoggedIn) {
-      this.showReviewForm = true;
-    } else {
-      this.showLoginModal = true;
-    }
+    this.isUserLoggedIn
+      ? (this.showReviewForm = true)
+      : (this.showLoginModal = true);
   }
 
-  /** Close login modal */
   closeLoginModal(): void {
     this.showLoginModal = false;
   }
 
-  /** Submit new review (placeholder) */
   submitReview(): void {}
 }
