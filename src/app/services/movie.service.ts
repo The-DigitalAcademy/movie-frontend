@@ -139,13 +139,15 @@ export class MovieService {
     return this.favorites.some((movie) => movie.id === movieId);
   }
 
-  getMovieActorsByMovieId(movieId: string) : Observable<Actor[]> {
-    const target_url = `${this.url}/api/imdb/${movieId}/cast`;
+
+  getMovieActorsByMovieId(movieId: number) : Observable<Actor[]> {
+    const target_url = `${this.url}/movies/${movieId}/cast`;
     return this.http.get<Actor[]>(target_url);
   }
 
-  getMovieDetail(movieid: string) : Observable<Movie> {
-    const target_url = `${this.url}/api/imdb/${movieid}`;
+getMovieDetail(movieid: number) : Observable<Movie> {
+    const target_url = `${this.url}/movies/${movieid}`;
     return this.http.get<Movie>(target_url);
   }
+
 }
